@@ -35,18 +35,13 @@ end
 function hooklibinternal(lib, funcname, ...)
     if LimeEnv.env["libhookersafemode"] then return "safemode" end
     if lib then -- its a lib
-        print("debug3")
         for i, v in pairs(libhookerhooks) do
             if v.lib == lib and v.funcname == funcname then v.code(...) end
         end
     else
         local decodedargs = {...}
-        print("debug1")
-        print(decodedargs[1])
-        print(funcname)
         if decodedargs[1] == funcname then
             -- found it!
-            print("debug2")
             for i, v in pairs(libhookerhooks) do
                 if v.lib == nil and v.funcname == funcname then
                     v.code(...)
@@ -62,7 +57,6 @@ function hooklib(lib, funcname, hook, name, userapp)
         local laf = loadlib("LimeAppFramework")
         local oldfunc = laf['StartUserProcess']
         if checkapphook(funcname) == false then
-            print("first time")
             laf['StartUserProcess'] = function(...)
                 hooklibinternal(nil, funcname, ...)
                 return oldfunc(...)
@@ -79,7 +73,6 @@ function hooklib(lib, funcname, hook, name, userapp)
         if checkmultifunction(name) then return "already exists" end
         local oldfunc = lib[funcname]
         if checkfunctionhook(lib) == false then
-            print("first time")
             lib[funcname] = function(...)
                 hooklibinternal(lib, funcname, ...)
                 return oldfunc(...)
@@ -116,11 +109,3 @@ else
 end
 
 LimeEnv.env['HookLib'] = hooklib
-
-
-
-
-function hookeg() print("lolz u just got hooked fool") end
-print(hooklib(loadlib("LimeEnv"), "Print", hookeg, "Example Hook"))
-print(hooklib(nil, "testapp", hookeg, "Example App Hook"))
-loadlib("LimeEnv").Print("hello.")
