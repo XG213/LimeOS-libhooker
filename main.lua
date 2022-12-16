@@ -8,9 +8,9 @@ local libhookerhooks = LimeEnv.env["libhookerhooks"]
 
 local hooktemplate = {
     ["name"] = "hookcustomname",
-    ["lib"] = "lib", -- if nil its a userapp
+    ["lib"] = nil, -- if nil its a userapp
     ["funcname"] = nil,
-    ["code"] = "code"
+    ["code"] = nil
 }
 
 function checkfunctionhook(lib)
@@ -51,7 +51,7 @@ function hooklibinternal(lib, funcname, ...)
     end
 end
 
-function hooklib(lib, funcname, hook, name, userapp)
+function hooklib(lib, funcname, hook, name)
     if lib == nil then
         if checkmultifunction(name) then return "already exists" end
         local laf = loadlib("LimeAppFramework")
