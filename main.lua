@@ -36,7 +36,9 @@ function hooklibinternal(lib, funcname, ...)
     if LimeEnv.env["libhookersafemode"] then return "safemode" end
     if lib then -- its a lib
         for i, v in pairs(libhookerhooks) do
-            if v.lib == lib and v.funcname == funcname then v.code(...) end
+            if v.lib == lib and v.funcname == funcname then
+                v.code(...)
+            end
         end
     else
         local decodedargs = {...}
